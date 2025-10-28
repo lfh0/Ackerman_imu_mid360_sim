@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="mid360_lidar_model">
+    <pose>0 0 0 0 0 0</pose>
+    <static>true</static>
+
+    <!-- 挂一个 link 来承载传感器 -->
+    <link name="mid360_link">
+      <inertial><mass>0.1</mass></inertial>
+
+      <!-- SDF 里加 sensor；注意：插件里再嵌 <ray>（该插件需要这样写） -->
+      <sensor type="ray" name="laser_livox">
+        <pose>0 0 0 0 0 0</pose>
+        <visualize>true</visualize>
+        <always_on>true</always_on>
+        <update_rate>10</update_rate>
+
+        <plugin name="livox_mid360_plugin" filename="liblivox_laser_simulation.so">
+          <!-- 这段 <ray> 必须放在 plugin 里（本插件的特殊用法） -->
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>100</samples>
+                <resolution>1</resolution>
+                <min_angle>-3.1415926535897931</min_angle>
+                <max_angle> 3.1415926535897931</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>50</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.516</min_angle>   <!-- ≈ -29.6° -->
+                <max_angle> 0.516</max_angle>   <!-- ≈ +29.6° -->
+              </vertical>
+            </scan>
+            <range>
+              <min>0.1</min>
+              <max>40</max>
+              <resolution>1</resolution>
+            </range>
+            <noise>
+              <type>gaussian</type>
+              <mean>0.0</mean>
+              <stddev>0.0</stddev>
+            </noise>
+          </ray>
+
+          <visualize>true</visualize>
+          <samples>20000</samples>
+          <downsample>1</downsample>
+          <csv_file_name>/home/lfh/Git/Livox_sim/src/Mid360_simulation_plugin/livox_laser_simulation/scan_mode/mid360-real-centr.csv</csv_file_name>
+          <publish_pointcloud_type>2</publish_pointcloud_type>
+          <ros_topic>/livox/lidar</ros_topic>
+          <frameName>mid360_link</frameName>
+          <robotNamespace>/</robotNamespace>
+        </plugin>
+      </sensor>
+    </link>
+  </model>
+</sdf>
