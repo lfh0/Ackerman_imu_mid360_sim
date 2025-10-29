@@ -1,0 +1,2 @@
+ackermann_vehicle/ackermann_vehicle_description:ackermann_vehicle/ackermann_vehicle_gazebo
+-DCATKIN_DEVEL_PREFIX=/home/lfh/Sim/Ackerman/devel -DCMAKE_INSTALL_PREFIX=/home/lfh/Sim/Ackerman/install -G Unix Makefiles
